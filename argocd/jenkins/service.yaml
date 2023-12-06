@@ -9,7 +9,7 @@ metadata:
       prometheus.io/port:   '8080'
 spec:
   selector:
-    app: jenkins-service
+    app: jenkins-server
   type: LoadBalancer
   ports:
     - name: http

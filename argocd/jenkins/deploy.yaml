@@ -21,12 +21,12 @@ spec:
         - name: jenkins
           image: jenkins/jenkins:lts
           resources:
-            limits:
-              memory: "2Gi"
-              cpu: "1000m"
-            requests:
-              memory: "500Mi"
-              cpu: "500m"
+          #   limits:
+          #     memory: "2Gi"
+          #     cpu: "1000m"
+          #   requests:
+          #     memory: "500Mi"
+          #     cpu: "500m"
           ports:
             - name: httpport
               containerPort: 8080
