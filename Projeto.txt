@@ -1,0 +1,37 @@
+*Arquitetura:
+VPC
+Cada região possuí algumas availability zones (AZs) que são datacenters
+Subnet Privada -> NAT Gateway (NGW) -> IGW
+ALB/NLB (Load Balancer) -> Subnet Pública -> IGW (Internet Gateway)
+EKS será executado nas subnets públicas poupando a criação de VPN
+MNG (Managed Node Groups/Worker nodes) serão instâncias EC2 executadas nas subnets privadas
+
+Criação dos objetos manualmente na AWS:
+VPC:
+https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html#network-requirements-vpc
+DNS resolution: Permite que os objetos dentro da VPC possam resolver nomes
+DNS hostnames: Atribuí dns hostname interno para cada recurso dentro da subnet públicas
+
+Subnets:
+https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html#network-requirements-subnets
+IGW atachado a VPC
+Subnets públicas serão atachadas a route tables com rota para o internet gateway (rota 0.0.0.0/0)
+Caso os managed node groups estejam implementados em subnets públicas, necessário habilitar o automatic assignment of public IP addresses
+Subnets privadas serão atachadas a route tables com rota para os NAT gateways (rota 0.0.0.0/0)
+
+Cluster IAM Role:
+Role com a policy necessária para criação do cluster
+Criação do cluster associando apenas as subnets públicas (endpoints)
+
+Node IAM Role:
+Role com a policy necessária para criação de nodes 
+Criação do node group associando apenas as subnets privadas (pods)
+
+Deploy AWS Load Balancer Controller
+https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
+
+Migração terraform.tfstate para repositório remoto
+
+Executar terraform fmt e validate na pipeline
+Terraform console para testar functions
+
